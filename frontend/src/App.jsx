@@ -1,5 +1,6 @@
 import Hero from './Components/Hero'
 import Navbar from './Components/Navbar'
+import TrendingSkill from './Components/TrendingSkill'
 import './index.css'
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
       <h1 className='h-screen bg-[#f6f7f8]'>
         <Navbar />
         <Hero />
+        <TrendingSkill/>
       </h1>
     </>
   )
