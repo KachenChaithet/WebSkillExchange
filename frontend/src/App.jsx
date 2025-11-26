@@ -1,17 +1,21 @@
-import Hero from './Components/Hero'
-import Navbar from './Components/Navbar'
-import TrendingSkill from './Components/TrendingSkill'
 import './index.css'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import DashboardPage from './Page/DashboardPage'
+import Skill from './Page/MySkill'
 
 function App() {
 
   return (
     <>
-      <h1 className='h-screen bg-[#f6f7f8]'>
-        <Navbar />
-        <Hero />
-        <TrendingSkill/>
-      </h1>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<DashboardPage />} />
+          <Route path='/skill' element={<Skill />} />
+
+
+        </Routes>
+
+      </BrowserRouter>
     </>
   )
 }
