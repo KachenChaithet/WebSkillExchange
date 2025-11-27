@@ -1,12 +1,18 @@
 import Navbar from "../Components/Navbar"
-import Skill from "../Components/Skill"
+import RequestVolume from "../Components/Skills/RequestVolume"
+import Skill from "../Components/Skills/Skill"
+import SkillPerformance from "../Components/Skills/SkillPerformance"
 
 const MySkill = () => {
   return (
-    <div className="min-h-screen bg-[#f6f7f8]">
-      <Navbar/>
-      <Skill/>
-    </div>
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-[#f6f7f8] px-20 ">
+        <Skill />
+        <SkillPerformance />
+        <RequestVolume/>
+      </div>
+    </>
   )
 }
 export default MySkill
