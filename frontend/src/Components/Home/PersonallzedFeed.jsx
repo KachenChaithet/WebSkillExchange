@@ -1,5 +1,5 @@
 import { useState } from "react"
-import CardPersonalized from "./Cards/CardPersonalized"
+import CardPersonalized from "../Cards/CardPersonalized"
 
 const STATUS_OPTIONS = ['Latest', 'รอซ่อม', 'กำลังซ่อม', 'ซ่อมเสร็จแล้ว']
 const PersonallzedFeed = () => {

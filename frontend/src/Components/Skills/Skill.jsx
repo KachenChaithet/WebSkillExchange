@@ -1,7 +1,25 @@
-import CardShowSkill from "./Cards/CardShowSkill"
+import CardShowSkill from "../Cards/CardShowSkill"
 
 const Skill = () => {
     const data = [
+        {
+            img: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
+            title: "JavaScript",
+            text: "Intermediate",
+            status: "Active"
+        },
+        {
+            img: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
+            title: "JavaScript",
+            text: "Intermediate",
+            status: "Active"
+        },
+        {
+            img: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
+            title: "JavaScript",
+            text: "Intermediate",
+            status: "Active"
+        },
         {
             img: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
             title: "JavaScript",
