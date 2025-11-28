@@ -3,6 +3,7 @@ import cors from 'cors'
 import { WebSocketServer } from 'ws'
 import { createServer } from 'http'
 import dotenv from 'dotenv'
+import { Socket } from 'dgram'
 dotenv.config()
 
 const app = express()
@@ -10,6 +11,17 @@ const port = process.env.PORT || 5000
 
 const server = createServer(app)
 const wss = new WebSocketServer({ server })
+
+wss.on('connection', (ws) => {
+    console.log('this use online');
+    ws.send('hello world')
+    ws.on('close    ', () => {
+        console.log('user out');
+    })
+
+
+})
+
 
 app.use(express.json())
 app.use(cors({

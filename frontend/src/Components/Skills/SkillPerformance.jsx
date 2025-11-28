@@ -23,9 +23,9 @@ const SkillPerformance = () => {
 
     ];
     return (
-        <div className="max-w-[50%] ">
+        <div className="space-y-2 ">
             <h1 className="text-xl md:text-3xl font-bold">Skill Performance Analytics</h1>
-            <div className="flex flex-wrap gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4  ">
 
                 {analyticsData.map((item,index) => (
                     <CardShowAnalytics key={index} change={item.change} description={item.description} label={item.label} value={item.value} />

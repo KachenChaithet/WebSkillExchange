@@ -43,7 +43,7 @@ const Skill = () => {
     return (<>
         {/* fuction */}
         <div className=" w-full">
-            <div className="flex justify-between flex-1 mt-10">
+            <div className="flex justify-between flex-1 pt-10">
                 <div className="">
                     <h1 className="text-5xl font-bold">My Skills</h1>
                     <p>A visual and interactive of your offered skills.</p>

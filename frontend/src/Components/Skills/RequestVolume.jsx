@@ -1,7 +1,11 @@
 const RequestVolume = () => {
     return (
-        <div className="font-bold text-2xl min-w-2xl bg-purple-100">
-sd
+        <div className="font-bold text-2xl    border border-neutral-200 bg-white rounded-xl p-6 shadow-md">
+            <h1>Request Volume (Last 6 Months)</h1>
+
+            <div className="bg-purple-300">
+                data
+            </div>
         </div>
     )
 }
