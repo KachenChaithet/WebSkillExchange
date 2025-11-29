@@ -1,3 +1,4 @@
+import { UserButton } from "@clerk/clerk-react"
 import { Link } from "react-router-dom"
 
 const Navbar = () => {
@@ -11,7 +12,7 @@ const Navbar = () => {
             </ul>
 
             <div className="">
-                profile
+                <UserButton afterSignOutUrl="/login"/>
             </div>
         </div>
     )

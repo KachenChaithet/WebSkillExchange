@@ -1,22 +1,21 @@
 import { useEffect, useRef, useState } from "react"
 import Navbar from "../Components/Navbar"
+import { io } from 'socket.io-client'
 
 const MessagePage = () => {
+
     const [message, setMessage] = useState('')
     const ws = useRef(null)
 
     const sendMessage = async () => {
-        socket.send(message)
+        if (ws.current) {
+            ws.current.emit('send_message', { message })
+        }
         setMessage('')
     }
     useEffect(() => {
-        const ws = new WebSocket('ws://localhost:5000')
-        ws.current = ws
-
-        ws.onmessage = (ev) => {
-            console.log(ev.data);
-            
-        }
+        const socket = io('http://localhost:5000')
+        ws.current = socket
     }, [])
     return (
         <>

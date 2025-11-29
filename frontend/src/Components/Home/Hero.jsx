@@ -12,9 +12,15 @@ const Hero = () => {
             </div>
 
             {/* SeachTerm */}
-            <div className="flex items-center min-w-2xs md:min-w-[1000px] rounded-xl bg-white shadow-md">
-                <div className=" hover:scale-105 transition-all cursor-pointer p-4 border-neutral-200 border-r">  <Search className="text-neutral-500 " /></div>
-                <input type="text" placeholder="What Skill are you looking for?" className="text-xl flex-1  px-2 py-4 font-semibold outline-0 rounded-xl focus:outline-3 focus:outline-neutral-200 " />
+            <div className="flex items-center w-full max-w-[1000px] bg-white shadow-md rounded-xl overflow-hidden ">
+                <div className="flex items-center justify-center p-3 border-r border-neutral-200 cursor-pointer hover:scale-105 transition-transform">
+                    <Search className="text-neutral-500" />
+                </div>
+                <input
+                    type="text"
+                    placeholder="What Skill are you looking for?"
+                    className="flex-1 px-4 py-3 text-lg font-semibold outline-none focus:ring-2 focus:ring-neutral-200"
+                />
             </div>
 
             {/* Offen and Request */}

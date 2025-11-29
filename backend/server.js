@@ -1,35 +1,44 @@
 import express from 'express'
 import cors from 'cors'
-import { WebSocketServer } from 'ws'
 import { createServer } from 'http'
 import dotenv from 'dotenv'
-import { Socket } from 'dgram'
+import { Server } from 'socket.io'
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
 dotenv.config()
 
 const app = express()
 const port = process.env.PORT || 5000
 
 const server = createServer(app)
-const wss = new WebSocketServer({ server })
-
-wss.on('connection', (ws) => {
-    console.log('this use online');
-    ws.send('hello world')
-    ws.on('close    ', () => {
-        console.log('user out');
-    })
-
-
+const io = new Server(server, {
+    cors: {
+        origin: 'http://localhost:5173'
+    }
 })
 
+io.on('connection', (socket) => {
+    console.log('user connection');
+
+    socket.on('send_message', (data) => {
+        console.log(`message:${{ data }}`);
+
+    })
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+
+    })
+})
 
 app.use(express.json())
 app.use(cors({
     origin: 'http://localhost:5173'
 }))
 
-app.post('/users', async (req, res) => {
-    res.send('hello world')
+app.get('/users', async (req, res) => {
+    const user = await prisma.user.findMany()
+    res.json(user)
 })
 
 
