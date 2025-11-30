@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react"
 import Navbar from "../Components/Navbar"
 import { io } from 'socket.io-client'
+import Sidebar from "../Components/Message/Sidebar"
+import ChatArea from "../Components/Message/ChatArea"
+import HeaderChat from "../Components/Message/HeaderChat"
 
 const MessagePage = () => {
 
@@ -20,9 +23,15 @@ const MessagePage = () => {
     return (
         <>
             <Navbar />
-            <div>MessagePage</div>
-            <input type="text" placeholder="enter message " className="border p-2" value={message} onChange={(e) => setMessage(e.target.value)} />
-            <button className="bg-green-500 rounded-md p-2" onClick={sendMessage}>send message</button>
+            <div className="flex">
+                <Sidebar />
+                <div className="flex flex-col flex-1">
+                    <HeaderChat />
+                    <div className="flex flex-1">
+                        <ChatArea />
+                    </div>
+                </div>
+            </div>
         </>
     )
 }

@@ -3,12 +3,27 @@ import cors from 'cors'
 import { createServer } from 'http'
 import dotenv from 'dotenv'
 import { Server } from 'socket.io'
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import user from './routers/user.router.js'
+
 dotenv.config()
 
 const app = express()
+app.use(express.json())
+app.use(cors({
+    origin: 'http://localhost:5173'
+}))
 const port = process.env.PORT || 5000
+
+
+app.use('/', user)
+
+
+
+
+
+
+
+
 
 const server = createServer(app)
 const io = new Server(server, {
@@ -31,15 +46,7 @@ io.on('connection', (socket) => {
     })
 })
 
-app.use(express.json())
-app.use(cors({
-    origin: 'http://localhost:5173'
-}))
 
-app.get('/users', async (req, res) => {
-    const user = await prisma.user.findMany()
-    res.json(user)
-})
 
 
 server.listen(port, () => {
