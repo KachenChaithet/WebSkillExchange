@@ -4,6 +4,7 @@ import { createServer } from 'http'
 import dotenv from 'dotenv'
 import { Server } from 'socket.io'
 import user from './routers/user.router.js'
+import friend from './routers/friend.router.js'
 
 dotenv.config()
 
@@ -16,6 +17,7 @@ const port = process.env.PORT || 5000
 
 
 app.use('/', user)
+app.use('/friends', friend)
 
 
 

@@ -56,8 +56,8 @@ const Skill = () => {
 
 
               <div className="flex gap-8 mt-10">
-                {data.map((item) => (
-                    <CardShowSkill img={item.img} text={item.text} status={item.status} title={item.title} />
+                {data.map((item,index) => (
+                    <CardShowSkill key={index} img={item.img} text={item.text} status={item.status} title={item.title} />
 
                 ))}
             </div>

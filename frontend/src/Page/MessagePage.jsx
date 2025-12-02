@@ -10,15 +10,11 @@ const MessagePage = () => {
     const [message, setMessage] = useState('')
     const ws = useRef(null)
 
-    const sendMessage = async () => {
-        if (ws.current) {
-            ws.current.emit('send_message', { message })
-        }
-        setMessage('')
-    }
     useEffect(() => {
         const socket = io('http://localhost:5000')
         ws.current = socket
+
+        return () => socket.disconnect()
     }, [])
     return (
         <>

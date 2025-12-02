@@ -21,4 +21,30 @@ model User {
   avatarUrl String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  sentRequests     FriendRequest[] @relation("SentRequests")
+  receivedRequests FriendRequest[] @relation("ReceivedRequests")
+  friendships1     Friendship[]    @relation("Friend1")
+  friendships2     Friendship[]    @relation("Friend2")
+}
+
+model FriendRequest {
+  id         String   @id @default(cuid())
+  senderId   String
+  receiverId String
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+
+  sender   User @relation("SentRequests", fields: [senderId], references: [clerkId])
+  receiver User @relation("ReceivedRequests", fields: [receiverId], references: [clerkId])
+}
+
+model Friendship {
+  id        String   @id @default(cuid())
+  user1Id   String
+  user2Id   String
+  createdAt DateTime @default(now())
+
+  user1 User @relation("Friend1", fields: [user1Id], references: [clerkId])
+  user2 User @relation("Friend2", fields: [user2Id], references: [clerkId])
 }

@@ -1,0 +1,57 @@
+import axios from 'axios'
+
+const apiBackend = import.meta.env.VITE_BACKENDAPI_URL
+
+const client = axios.create({
+    baseURL: apiBackend
+})
+
+
+export const api = {
+    post: {
+        async getall(path) {
+            const { data } = await client.get(path)
+            return data
+        },
+
+        async create(path, payload) {
+            const { data } = await client.post(path, payload)
+            return data
+        },
+
+        async delete(path, id) {
+            const { data } = await client.delete(`${path}/${id}`)
+            return data
+        },
+        async getById(path, id) {
+            const { data } = await client.get(`${path}/${id}`)
+            return data
+        },
+        async update(path, payload, id) {
+            const { data } = await client.put(`${path}/${id}`, payload)
+            return data
+        }
+
+    },
+    friends: {
+
+        async request(path, payload) {
+            const { data } = await client.post(path, payload)
+            return data
+        },
+
+        async accept(path, payload) {
+            const { data } = await client.post(path, payload)
+            return data
+        },
+        async reject(path, payload) {
+            const { data } = await client.post(path, payload)
+            return data
+        },
+        async getall(path, id) {
+            const { data } = await client.post(`${path}?currentUserId=${id}`)
+            return data
+        }
+    }
+
+}

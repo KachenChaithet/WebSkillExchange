@@ -8,11 +8,12 @@ const Navbar = () => {
             <ul className="flex text-xl font-semibold text-neutral-400 gap-8">
                 <Link to={'/'}><li className="hover:text-neutral-500 cursor-pointer">Home</li></Link>
                 <Link to={'/skill'}> <li className="hover:text-neutral-500 cursor-pointer">Skill hub</li></Link>
+                <Link to={'/connect'}><li className="hover:text-neutral-500 cursor-pointer">Connect</li></Link>
                 <Link to={'/message'}><li className="hover:text-neutral-500 cursor-pointer">Message</li></Link>
             </ul>
 
             <div className="">
-                <UserButton afterSignOutUrl="/login"/>
+                <UserButton afterSignOutUrl="/login" />
             </div>
         </div>
     )

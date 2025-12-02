@@ -19,7 +19,7 @@ const Hero = () => {
                 <input
                     type="text"
                     placeholder="What Skill are you looking for?"
-                    className="flex-1 px-4 py-3 text-lg font-semibold outline-none focus:ring-2 focus:ring-neutral-200"
+                    className="flex-1 px-4 py-3 text-lg font-medium outline-none focus:ring-2 focus:ring-neutral-200"
                 />
             </div>
 

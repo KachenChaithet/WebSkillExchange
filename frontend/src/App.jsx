@@ -7,6 +7,7 @@ import LoginPage from './Page/LoginPage'
 import SignUpPage from './Page/SignUpPage'
 import RequireAuth from './Middlewere/RequireAuth'
 import ProtectedLayout from './Middlewere/ProtectedLayout'
+import ConnectPage from './Page/ConnectPage'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
             <Route path='/' element={<DashboardPage />} />
             <Route path='/skill' element={<MySkill />} />
             <Route path='/message' element={<MessagePage />} />
+            <Route path='/connect' element={<ConnectPage />} />
           </Route>
         </Routes>
 
