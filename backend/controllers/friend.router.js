@@ -3,7 +3,8 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export const sendFriendRequest = async (req, res) => {
-    const { senderId, receiverId } = req.body;
+    const { receiverId } = req.body;
+    const senderId = req.userId
 
 
     try {
@@ -41,7 +42,9 @@ export const sendFriendRequest = async (req, res) => {
 };
 
 export const acceptFriendRequest = async (req, res) => {
-    const { currentUserId, requestId } = req.body;
+    const { requestId } = req.body;
+    const currentUserId = req.userId
+    console.log(currentUserId);
 
     if (!currentUserId || !requestId) {
         return res.status(400).json({ message: "currentUserId and requestId are required" });
@@ -85,7 +88,8 @@ export const acceptFriendRequest = async (req, res) => {
 
 
 export const rejectFriendRequest = async (req, res) => {
-    const { requestId, currentUserId } = req.body;
+    const { requestId } = req.body;
+    const currentUserId = req.userId
 
     if (!requestId || !currentUserId) {
         return res.status(400).json({ message: "requestId and currentUserId are required" });
@@ -186,6 +190,68 @@ export const getAllFriends = async (req, res) => {
         res.json({ friends: friendList });
     } catch (error) {
         console.error("Error in getAllFriends:", error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getRelatedUsers = async (req, res) => {
+    const currentUserId = req.userId
+    if (!currentUserId) return res.status(400).json({ message: "currentUserId is required" });
+
+    try {
+        // ดึง friendships ของเรา
+        const friendships = await prisma.friendship.findMany({
+            where: {
+                OR: [
+                    { user1Id: currentUserId },
+                    { user2Id: currentUserId }
+                ]
+            }
+        });
+
+        // ดึง friendRequests ของเรา (pending)
+        const friendRequests = await prisma.friendRequest.findMany({
+            where: {
+                OR: [
+                    { senderId: currentUserId },
+                    { receiverId: currentUserId }
+                ],
+                status: "pending"
+            }
+        });
+
+        // รวม clerkId ทั้งหมดที่เกี่ยวข้อง
+        const relatedIds = new Set();
+
+        friendships.forEach(f => {
+            relatedIds.add(f.user1Id === currentUserId ? f.user2Id : f.user1Id);
+        });
+
+        friendRequests.forEach(fr => {
+            relatedIds.add(fr.senderId === currentUserId ? fr.receiverId : fr.senderId);
+        });
+
+        // ดึงข้อมูล user ทั้งหมดที่เกี่ยวข้อง
+        const users = await prisma.user.findMany({
+            where: { clerkId: { in: Array.from(relatedIds) } }
+        });
+
+        // เพิ่มสถานะให้แต่ละ user
+        const usersWithStatus = users.map(user => {
+            if (friendships.some(f => f.user1Id === currentUserId && f.user2Id === user.clerkId || f.user2Id === currentUserId && f.user1Id === user.clerkId)) {
+                return { ...user, status: "friend" };
+            }
+            const pending = friendRequests.find(fr => fr.senderId === currentUserId && fr.receiverId === user.clerkId || fr.senderId === user.clerkId && fr.receiverId === currentUserId);
+            if (pending) {
+                return { ...user, status: pending.senderId === currentUserId ? "pending_sent" : "pending_received" };
+            }
+            return { ...user, status: "none" };
+        });
+
+        res.json({ users: usersWithStatus });
+
+    } catch (error) {
+        console.error(error);
         res.status(500).json({ message: error.message });
     }
 };

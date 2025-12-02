@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { ArrowUpWideNarrow } from 'lucide-react'
 
 const apiBackend = import.meta.env.VITE_BACKENDAPI_URL
 
@@ -50,6 +51,14 @@ export const api = {
         },
         async getall(path, id) {
             const { data } = await client.post(`${path}?currentUserId=${id}`)
+            return data
+        }
+    },
+    users: {
+        async getall(path, token) {
+            const { data } = await client.get(path, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
             return data
         }
     }

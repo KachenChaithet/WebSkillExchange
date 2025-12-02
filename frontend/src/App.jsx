@@ -8,8 +8,25 @@ import SignUpPage from './Page/SignUpPage'
 import RequireAuth from './Middlewere/RequireAuth'
 import ProtectedLayout from './Middlewere/ProtectedLayout'
 import ConnectPage from './Page/ConnectPage'
+import { useEventUser } from './Store/useUserStore'
+import { useEffect } from 'react'
+import { useAuth } from '@clerk/clerk-react'
 
 function App() {
+
+  const { getToken } = useAuth()
+  const fetchusers = useEventUser((e) => e.fetchuser)
+
+
+
+
+  useEffect(() => {
+    const loadUsers = async () => {
+      const token = await getToken()
+      await fetchusers(token)
+    }
+    loadUsers()
+  }, [getToken, fetchusers])
 
   return (
     <>

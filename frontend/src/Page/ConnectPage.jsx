@@ -1,7 +1,14 @@
 import { Search } from "lucide-react"
 import Navbar from "../Components/Navbar"
+import CardUserConnect from "../Components/Cards/CardUserConnect"
+import { useEventUser } from "../Store/useUserStore"
 
 const ConnectPage = () => {
+    const { users = [] } = useEventUser((e) => e.userAll)
+
+
+    console.log(users);
+
     return (
 
 
@@ -23,6 +30,21 @@ const ConnectPage = () => {
                             className="flex-1 px-4 py-3 text-lg font-medium outline-none focus:ring-2 focus:ring-neutral-200"
                         />
                     </div>
+                </div>
+                <div className="flex flex-wrap justify-center gap-6 mt-10">
+                    {users?.length > 0 ? (
+                        users.map((user) => (
+                            <CardUserConnect
+                                key={user.id}
+                                img={user.avatarUrl}
+                                name={user.username}
+                                title="hi"
+                                status={user.status}
+                            />
+                        ))
+                    ) : (
+                        <div className="text-2xl">Loading...</div>
+                    )}
                 </div>
 
 

@@ -19,7 +19,7 @@ const MessagePage = () => {
     return (
         <>
             <Navbar />
-            <div className="flex">
+            <div className="flex ">
                 <Sidebar />
                 <div className="flex flex-col flex-1">
                     <HeaderChat />

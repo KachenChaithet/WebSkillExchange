@@ -62,3 +62,69 @@ export const getAllUsers = async (req, res) => {
     }
 
 }
+
+
+export const getAllUsersWithStatus = async (req, res) => {
+    const currentUserId = req.userId
+
+    if (!currentUserId) {
+        return res.status(400).json({ message: "currentUserId is required" })
+    }
+
+    try {
+        // ดึง user ทั้งหมด ยกเว้นตัวเอง
+        const users = await prisma.user.findMany({
+            where: { clerkId: { not: currentUserId } }
+        })
+
+        // ดึง friendships และ friendRequests ของเรา
+        const friendships = await prisma.friendship.findMany({
+            where: {
+                OR: [
+                    { user1Id: currentUserId },
+                    { user2Id: currentUserId }
+                ]
+            }
+        })
+
+        const friendRequests = await prisma.friendRequest.findMany({
+            where: {
+                OR: [
+                    { senderId: currentUserId },
+                    { receiverId: currentUserId }
+                ],
+                status: "pending"
+            }
+        })
+
+        const usersWithStatus = users.map(user => {
+            // ตรวจสอบว่าเป็นเพื่อนหรือไม่
+            const isFriend = friendships.some(f =>
+                (f.user1Id === currentUserId && f.user2Id === user.clerkId) ||
+                (f.user2Id === currentUserId && f.user1Id === user.clerkId)
+            )
+
+            if (isFriend) return { ...user, status: "friend" }
+
+            // ตรวจสอบคำขอ pending
+            const pendingRequest = friendRequests.find(fr =>
+                (fr.senderId === currentUserId && fr.receiverId === user.clerkId) ||
+                (fr.senderId === user.clerkId && fr.receiverId === currentUserId)
+            )
+
+            if (pendingRequest) {
+                return {
+                    ...user,
+                    status: pendingRequest.senderId === currentUserId ? "pending_sent" : "pending_received"
+                }
+            }
+
+            return { ...user, status: "none" }
+        })
+
+        res.json({ users: usersWithStatus })
+    } catch (error) {
+        console.error("Error in getAllUsersWithStatus:", error)
+        res.status(500).json({ message: error.message })
+    }
+}

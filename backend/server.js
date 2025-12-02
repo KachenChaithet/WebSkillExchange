@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import { Server } from 'socket.io'
 import user from './routers/user.router.js'
 import friend from './routers/friend.router.js'
+import { clerkMiddleware } from '@clerk/express'
 
 dotenv.config()
 
@@ -15,11 +16,11 @@ app.use(cors({
 }))
 const port = process.env.PORT || 5000
 
+app.use(clerkMiddleware())
 
 app.use('/', user)
+
 app.use('/friends', friend)
-
-
 
 
 
