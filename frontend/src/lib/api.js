@@ -41,8 +41,10 @@ export const api = {
             return data
         },
 
-        async accept(path, payload) {
-            const { data } = await client.post(path, payload)
+        async accept(path, payload, token) {
+            const { data } = await client.post(path, { requestId: payload }, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
             return data
         },
         async reject(path, payload) {

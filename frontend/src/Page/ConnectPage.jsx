@@ -4,10 +4,9 @@ import CardUserConnect from "../Components/Cards/CardUserConnect"
 import { useEventUser } from "../Store/useUserStore"
 
 const ConnectPage = () => {
-    const { users = [] } = useEventUser((e) => e.userAll)
+    const users = useEventUser((e) => e.userAll)
 
 
-    console.log(users);
 
     return (
 
@@ -36,6 +35,7 @@ const ConnectPage = () => {
                         users.map((user) => (
                             <CardUserConnect
                                 key={user.id}
+                                id={user.clerkId}
                                 img={user.avatarUrl}
                                 name={user.username}
                                 title="hi"
