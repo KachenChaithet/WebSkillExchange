@@ -52,7 +52,7 @@ export const api = {
             return data
         },
         async getall(path, id) {
-            const { data } = await client.post(`${path}?currentUserId=${id}`)
+            const { data } = await client.get(`${path}?currentUserId=${id}`)
             return data
         }
     },

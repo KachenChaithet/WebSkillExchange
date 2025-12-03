@@ -1,17 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import { useEventUser } from "../../Store/useUserStore";
 
 const CardUserConnect = ({ id, img, name, stack = [], title, status }) => {
 
     const acceptFriend = useEventUser((e) => e.acceptFriend)
     const updateUserStatus = useEventUser((e) => e.updateUserStatus)
+    const navigate = useNavigate()
 
 
     const handleAction = async (action) => {
         if (action === 'accept') {
             updateUserStatus(id, 'friend')
             await acceptFriend(id)
-        } else if (action === 'message'){
-            
+        } else if (action === 'message') {
+            navigate(`/message/${name}`)
         }
 
 

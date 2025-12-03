@@ -1,9 +1,12 @@
 import { create } from 'zustand'
 import { api } from '../lib/api'
+import { useUser } from '@clerk/clerk-react'
 
 export const EventUser = (set, get) => ({
     token: '',
     userAll: [],
+    friends: [],
+
 
     fetchuser: async (token) => {
         try {
@@ -39,6 +42,16 @@ export const EventUser = (set, get) => ({
                 : []
         }))
     },
+    fetchFriend: async (id) => {
+        try {
+            const friendall = await api.friends.getall('/friends/getall', id)
+            const { friends } = friendall
+            set({ friends: friends })
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 })
 
 

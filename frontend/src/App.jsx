@@ -10,12 +10,13 @@ import ProtectedLayout from './Middlewere/ProtectedLayout'
 import ConnectPage from './Page/ConnectPage'
 import { useEventUser } from './Store/useUserStore'
 import { useEffect } from 'react'
-import { useAuth } from '@clerk/clerk-react'
+import { useAuth, useUser } from '@clerk/clerk-react'
 
 function App() {
 
   const { getToken } = useAuth()
   const fetchusers = useEventUser((e) => e.fetchuser)
+
 
 
 
@@ -39,6 +40,7 @@ function App() {
             <Route path='/' element={<DashboardPage />} />
             <Route path='/skill' element={<MySkill />} />
             <Route path='/message' element={<MessagePage />} />
+            <Route path="/message/:username" element={<MessagePage />} />
             <Route path='/connect' element={<ConnectPage />} />
           </Route>
         </Routes>

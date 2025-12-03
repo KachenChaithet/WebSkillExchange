@@ -1,6 +1,13 @@
 import { Search } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
-const Sidebar = () => {
+const Sidebar = ({ friends }) => {
+    const navigate = useNavigate()
+
+    const handleSelectFriend = (friend) => {
+        navigate(`/message/${friend.username}`, { state: { person: friend } })
+    }
+
     return (
         <div className="w-100 min-h-screen  bg-white border border-neutral-200 ">
 
@@ -23,16 +30,19 @@ const Sidebar = () => {
 
 
             {/* UsersConversations */}
-            <div className=" p-4 flex items-center justify-between border-l-3 border-transparent ">
-                <div className="flex items-center gap-4">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgF2suM5kFwk9AdFjesEr8EP1qcyUvah8G7w&s" alt="" className="w-10 h-10" />
-                    <div className="">
-                        <h1 className="text-xl font-sans">username</h1>
-                        <p className="font-medium text-neutral-500">explain user</p>
+            {friends.map((person) => (
+                <div onClick={() => handleSelectFriend(person)} className=" p-4 flex items-center justify-between border-l-3 border-transparent hover:bg-[#e9f3fd]  ">
+                    <div className="flex items-center gap-4">
+                        <img src={person.avatarUrl} alt="" className="w-10 h-10 rounded-full" />
+                        <div className="">
+                            <h1 className="text-xl font-sans">{person.username}</h1>
+                            <p className="font-medium text-neutral-500">explain user</p>
+                        </div>
                     </div>
+                    <h1 className="text-sm text-neutral-600">5m ago</h1>
                 </div>
-                <h1 className="text-sm text-neutral-600">5m ago</h1>
-            </div>
+
+            ))}
 
             <div className=" p-4 flex items-center justify-between border-l-3 border-[#2287ee] bg-[#e9f3fd] ">
                 <div className="flex items-center gap-4 ">
