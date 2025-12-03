@@ -1,5 +1,5 @@
 import express from 'express'
-import { acceptFriendRequest, checkFriendStatus, getAllFriends, getRelatedUsers, rejectFriendRequest, sendFriendRequest } from '../controllers/friend.router.js'
+import { acceptFriendRequest, checkFriendStatus, getAllFriends, getRelatedUsers, rejectFriendRequest, sendFriendRequest } from '../controllers/friend.controller.js'
 import { userAuth } from '../middleware/user.middleware.js'
 
 const router = express.Router()
