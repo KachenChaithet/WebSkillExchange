@@ -5,19 +5,25 @@ const CardUserConnect = ({ id, img, name, stack = [], title, status, user }) => 
 
     const acceptFriend = useEventUser((e) => e.acceptFriend)
     const updateUserStatus = useEventUser((e) => e.updateUserStatus)
+    const addFriend = useEventUser((e) => e.addFriend)
     const navigate = useNavigate()
 
 
     const handleAction = async (action) => {
+
         if (action === 'accept') {
             updateUserStatus(id, 'friend')
             await acceptFriend(id)
         } else if (action === 'message') {
             navigate(`/message/${name}`, { state: { person: user } })
+        } else if (action === 'connect') {
+            addFriend(id)
         }
 
 
     }
+
+    console.log(status);
 
     return (
         <div className="min-w-[400px] flex flex-col items-center bg-white p-4 gap-4 rounded-xl">
@@ -53,7 +59,7 @@ const CardUserConnect = ({ id, img, name, stack = [], title, status, user }) => 
                         : 'bg-white border border-neutral-200 hover:bg-neutral-100'
                         }`}
                 >
-                    {status === 'friend' ? 'Message' : 'Connect'}
+                    {status === 'friend' ? 'Message' : status === 'pending_sent' ? 'pending' : 'connect'}
                 </button>
             )}
         </div>

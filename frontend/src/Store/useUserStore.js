@@ -21,6 +21,20 @@ export const EventUser = (set, get) => ({
             console.log(error);
         }
     },
+    addFriend: async (payload) => {
+        try {
+            const { token } = get()
+            console.log(token);
+
+            await api.friends.request('/friends/request', payload, token)
+            await get().fetchuser(token)
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
+    ,
     acceptFriend: async (payload) => {
         try {
             const token = get().token          // ดึง token จาก state

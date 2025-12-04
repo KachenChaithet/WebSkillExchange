@@ -1,4 +1,4 @@
-const FriendMessage = ({ img, text }) => {
+const FriendMessage = ({ img, text, time }) => {
     return (
         <div className="flex gap-4">
             <img src={img} alt="" className="w-10 h-10 rounded-full" />
@@ -7,7 +7,7 @@ const FriendMessage = ({ img, text }) => {
                     <p>{text}
                     </p>
                 </div>
-                <span className="text-sm text-neutral-500 font-medium">10:49 AM</span>
+                <span className="text-sm text-neutral-500 font-medium">{time}</span>
             </div>
         </div>
     )

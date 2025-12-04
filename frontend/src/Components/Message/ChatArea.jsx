@@ -11,6 +11,7 @@ const ChatArea = () => {
     const currentUser = useChatStore((e) => e.currentUser);
 
     const bottomRef = useRef(null);
+    console.log(message);
 
     // scroll ลงล่างทุกครั้งที่ message เปลี่ยน
     useEffect(() => {
@@ -25,10 +26,10 @@ const ChatArea = () => {
         <div className="flex flex-col bg-neutral-100 flex-1 p-4  h-[436px]">
             {message.map((msg, index) =>
                 msg.senderId === currentUser ? (
-                    <OwnMessage key={index} text={msg.text} />
+                    <OwnMessage key={index} text={msg.text} time={msg.date} />
                 ) : (
-                    <FriendMessage key={index} img={person.avatarUrl} text={msg.text} />
-                )
+                    <FriendMessage key={index} img={person.avatarUrl} text={msg.text} time={msg.date}/>
+            )
             )}
             {/* anchor สำหรับ scroll */}
             <div ref={bottomRef} />

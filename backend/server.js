@@ -39,15 +39,13 @@ io.on('connection', (socket) => {
     const userId = socket.handshake.query.userId;
     if (userId) {
         socket.join(userId)
-        console.log("User joined room   :", userId)
     }
 
     socket.on('sendMessage', (data) => {
         const { senderId, receiverId, text } = data
-        console.log(senderId, receiverId, text);
 
         const msg = {
-            senderId, receiverId, text
+            senderId, receiverId, text, date: new Date().toLocaleDateString()
         }
         io.to(receiverId).emit('receiveMessage', msg)
 

@@ -17,6 +17,7 @@ export const sendFriendRequest = async (req, res) => {
             }
         });
 
+
         if (alreadyFriends) {
             return res.status(400).json({ message: "already_friends" });
         }

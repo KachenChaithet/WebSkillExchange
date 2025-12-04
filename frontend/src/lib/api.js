@@ -36,8 +36,10 @@ export const api = {
     },
     friends: {
 
-        async request(path, payload) {
-            const { data } = await client.post(path, payload)
+        async request(path, payload, token) {
+            const { data } = await client.post(path, { receiverId: payload }, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
             return data
         },
 

@@ -67,6 +67,7 @@ export const getAllUsers = async (req, res) => {
 export const getAllUsersWithStatus = async (req, res) => {
     const currentUserId = req.userId
 
+
     if (!currentUserId) {
         return res.status(400).json({ message: "currentUserId is required" })
     }
