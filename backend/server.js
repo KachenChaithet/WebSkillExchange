@@ -36,10 +36,23 @@ const io = new Server(server, {
 })
 
 io.on('connection', (socket) => {
-    console.log('user connection');
+    const userId = socket.handshake.query.userId;
+    if (userId) {
+        socket.join(userId)
+        console.log("User joined room   :", userId)
+    }
 
-    socket.on('send_message', (data) => {
-        console.log(`message:${{ data }}`);
+    socket.on('sendMessage', (data) => {
+        const { senderId, receiverId, text } = data
+        console.log(senderId, receiverId, text);
+
+        const msg = {
+            senderId, receiverId, text
+        }
+        io.to(receiverId).emit('receiveMessage', msg)
+
+        io.to(senderId).emit("receiveMessage", msg);
+
 
     })
 

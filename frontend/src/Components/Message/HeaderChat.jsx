@@ -1,8 +1,24 @@
 import { useLocation } from "react-router-dom";
+import { useChatStore } from "../../Store/useChatStore";
+import { useEffect } from "react";
 
-const HeaderChat = () => {
+const HeaderChat = ({ user }) => {
     const location = useLocation();
     const person = location.state?.person;
+
+    const setFriend = useChatStore((e) => e.setFriend)
+    const setCurrentUser = useChatStore((e) => e.setCurrentUser)
+
+
+    useEffect(() => {
+        if (user?.id) {
+            setCurrentUser(user.id);
+        }
+
+        if (person?.clerkId) {
+            setFriend(person.clerkId);
+        }
+    }, [user, person]);
 
     return (
         <>

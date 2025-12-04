@@ -9,7 +9,7 @@ const Sidebar = ({ friends }) => {
     }
 
     return (
-        <div className="w-100 min-h-screen  bg-white border border-neutral-200 ">
+        <div className="w-100 max-h-screen h-[860px]  bg-white border border-neutral-200 overflow-y-auto ">
 
 
             {/* SeachTerm */}

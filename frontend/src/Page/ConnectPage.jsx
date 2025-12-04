@@ -34,6 +34,7 @@ const ConnectPage = () => {
                     {users?.length > 0 ? (
                         users.map((user) => (
                             <CardUserConnect
+                                user={user}
                                 key={user.id}
                                 id={user.clerkId}
                                 img={user.avatarUrl}
