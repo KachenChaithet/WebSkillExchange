@@ -1,13 +1,13 @@
-import { useLocation } from "react-router-dom";
+import { LogOut } from "lucide-react";
 import { useChatStore } from "../../Store/useChatStore";
 import { useEffect } from "react";
 
 const HeaderChat = ({ user }) => {
-    const location = useLocation();
-    const person = location.state?.person;
 
     const setFriend = useChatStore((e) => e.setFriend)
     const setCurrentUser = useChatStore((e) => e.setCurrentUser)
+    const fetchMessage = useChatStore((e) => e.fetchMessage)
+    const person = useChatStore((e) => e.friend)
 
 
     useEffect(() => {
@@ -17,6 +17,7 @@ const HeaderChat = ({ user }) => {
 
         if (person?.clerkId) {
             setFriend(person.clerkId);
+            fetchMessage(person.clerkId)
         }
     }, [user, person]);
 

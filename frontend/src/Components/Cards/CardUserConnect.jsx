@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEventUser } from "../../Store/useUserStore";
+import { useChatStore } from "../../Store/useChatStore";
 
 const CardUserConnect = ({ id, img, name, stack = [], title, status, user }) => {
 
@@ -7,6 +8,7 @@ const CardUserConnect = ({ id, img, name, stack = [], title, status, user }) => 
     const updateUserStatus = useEventUser((e) => e.updateUserStatus)
     const addFriend = useEventUser((e) => e.addFriend)
     const navigate = useNavigate()
+    const setSelcetFriend = useChatStore((e) => e.setSelcetFriend)
 
 
     const handleAction = async (action) => {
@@ -15,7 +17,9 @@ const CardUserConnect = ({ id, img, name, stack = [], title, status, user }) => 
             updateUserStatus(id, 'friend')
             await acceptFriend(id)
         } else if (action === 'message') {
-            navigate(`/message/${name}`, { state: { person: user } })
+            setSelcetFriend(user)
+            navigate(`/message/${name}`)
+
         } else if (action === 'connect') {
             addFriend(id)
         }

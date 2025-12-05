@@ -11,24 +11,23 @@ import ConnectPage from './Page/ConnectPage'
 import { useEventUser } from './Store/useUserStore'
 import { useEffect } from 'react'
 import { useAuth, useUser } from '@clerk/clerk-react'
+import { useChatStore } from './Store/useChatStore'
 
 function App() {
 
   const { getToken } = useAuth()
   const fetchusers = useEventUser((e) => e.fetchuser)
-  
-
-
-
+  const setToken = useChatStore((e) => e.setToken)
 
 
   useEffect(() => {
     const loadUsers = async () => {
       const token = await getToken()
       await fetchusers(token)
+      await setToken(token)
     }
     loadUsers()
-  }, [getToken, fetchusers])
+  }, [getToken, fetchusers, MessagePage])
 
   return (
     <>

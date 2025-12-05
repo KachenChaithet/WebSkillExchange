@@ -1,4 +1,5 @@
 const FriendMessage = ({ img, text, time }) => {
+    
     return (
         <div className="flex gap-4">
             <img src={img} alt="" className="w-10 h-10 rounded-full" />

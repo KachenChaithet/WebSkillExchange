@@ -65,6 +65,16 @@ export const api = {
             })
             return data
         }
+    },
+    message: {
+        async getmessages(path, token, payload) {
+
+            const { data } = await client.get(`${path}/${payload}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+
+            return data
+        }
     }
 
 }

@@ -5,8 +5,11 @@ import dotenv from 'dotenv'
 import { Server } from 'socket.io'
 import user from './routers/user.router.js'
 import friend from './routers/friend.router.js'
+import message from './routers/message.router.js'
 import { clerkMiddleware } from '@clerk/express'
+import { PrismaClient } from '@prisma/client'
 
+const prisma = new PrismaClient()
 dotenv.config()
 
 const app = express()
@@ -21,6 +24,8 @@ app.use(clerkMiddleware())
 app.use('/', user)
 
 app.use('/friends', friend)
+
+app.use('/message', message)
 
 
 
@@ -41,12 +46,19 @@ io.on('connection', (socket) => {
         socket.join(userId)
     }
 
-    socket.on('sendMessage', (data) => {
+    socket.on('sendMessage', async (data) => {
         const { senderId, receiverId, text } = data
 
-        const msg = {
-            senderId, receiverId, text, date: new Date().toLocaleDateString()
-        }
+
+        const msg = await prisma.message.create({
+            data: {
+                senderId,
+                receiverId,
+                text,
+            }
+        })
+
+
         io.to(receiverId).emit('receiveMessage', msg)
 
         io.to(senderId).emit("receiveMessage", msg);

@@ -48,3 +48,11 @@ model Friendship {
   user1 User @relation("Friend1", fields: [user1Id], references: [clerkId])
   user2 User @relation("Friend2", fields: [user2Id], references: [clerkId])
 }
+
+model Message {
+  id         String   @id @default(uuid())
+  senderId   String
+  receiverId String
+  text       String
+  createdAt  DateTime @default(now())
+}

@@ -30,7 +30,9 @@ const MessagePage = () => {
         <>
             <Navbar />
             <div className="flex ">
-                <Sidebar friends={friends} />
+                <div className="hidden md:block">
+                    <Sidebar friends={friends} />
+                </div>
                 <div className="flex flex-col flex-1">
                     <HeaderChat user={user} />
                     <div className="flex flex-col flex-1 ">

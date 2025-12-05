@@ -1,11 +1,15 @@
 import { Search } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { useChatStore } from "../../Store/useChatStore"
 
 const Sidebar = ({ friends }) => {
     const navigate = useNavigate()
+    const setSelcetFriend = useChatStore((e) => e.setSelcetFriend)
 
     const handleSelectFriend = (friend) => {
-        navigate(`/message/${friend.username}`, { state: { person: friend } })
+        setSelcetFriend(friend)
+        navigate(`/message/${friend.username}`)
+
     }
 
     return (

@@ -21,7 +21,7 @@ const InputChat = () => {
     <>
       {currentFriend && (
         <div className="min-h-[100px] p-6 bg-white">
-          <div className="bg-neutral-100 p-4 rounded-xl flex items-center justify-between">
+          <div className="bg-neutral-100 px-4 py-2 rounded-xl flex items-center justify-between">
 
             <input
               ref={inputRef}
