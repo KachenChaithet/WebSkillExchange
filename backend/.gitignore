@@ -32,4 +32,4 @@ dist-ssr
 /generated/prisma
 
 
-/migrations
+prisma/migrations/
