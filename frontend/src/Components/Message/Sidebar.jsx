@@ -5,6 +5,10 @@ import { useChatStore } from "../../Store/useChatStore"
 const Sidebar = ({ friends }) => {
     const navigate = useNavigate()
     const setSelcetFriend = useChatStore((e) => e.setSelcetFriend)
+    const onlineUsers = useChatStore((e) => e.onlineUsers)
+    const currentFriend = useChatStore((e) => e.currentFriend)
+
+
 
     const handleSelectFriend = (friend) => {
         setSelcetFriend(friend)
@@ -34,35 +38,33 @@ const Sidebar = ({ friends }) => {
 
 
             {/* UsersConversations */}
-            {friends.map((person) => (
-                <div onClick={() => handleSelectFriend(person)} className=" p-4 flex items-center justify-between border-l-3 border-transparent hover:bg-[#e9f3fd]  ">
-                    <div className="flex items-center gap-4">
-                        <img src={person.avatarUrl} alt="" className="w-10 h-10 rounded-full" />
-                        <div className="">
-                            <h1 className="text-xl font-sans">{person.username}</h1>
-                            <p className="font-medium text-neutral-500">explain user</p>
+            {friends.map((person) => {
+                const isOnline = onlineUsers.includes(person.clerkId)
+
+                const activeFriend = currentFriend === person.clerkId
+
+
+
+
+                return (
+                    <div onClick={() => handleSelectFriend(person)} className={` p-4 flex items-center justify-between border-l-3  ${activeFriend ? ' border-[#2287ee] bg-[#e9f3fd]' : 'border-transparent'} hover:bg-[#e9f3fd]  `}>
+                        <div className="flex items-center gap-4">
+                            <div className="relative w-10 h-10">
+                                <img src={person.avatarUrl} alt="" className="w-10 h-10 rounded-full" />
+                                <span className={`w-3 h-3 ${isOnline ? 'bg-green-600' : 'bg-gray-600'}  border-2 border-white rounded-full absolute bottom-0 right-0`}></span>
+
+                            </div>
+
+                            <div className="">
+                                <h1 className={`text-xl ${activeFriend && 'text-blue-500'} font-sans`}>{person.username}</h1>
+                                <p className={`font-medium ${activeFriend ? 'text-blue-500' : 'text-neutral-500'} `}>explain user</p>
+                            </div>
                         </div>
+                        <h1 className="text-sm text-neutral-600">{isOnline ? 'online' : 'old'}</h1>
                     </div>
-                    <h1 className="text-sm text-neutral-600">5m ago</h1>
-                </div>
-
-            ))}
-
-            <div className=" p-4 flex items-center justify-between border-l-3 border-[#2287ee] bg-[#e9f3fd] ">
-                <div className="flex items-center gap-4 ">
-                    <div className="relative w-10 h-10">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgF2suM5kFwk9AdFjesEr8EP1qcyUvah8G7w&s" alt="" className="w-full h-full rounded-full" />
-                        <span className="w-3 h-3 bg-green-600 border-2 border-white rounded-full absolute bottom-0 right-0"></span>
-                    </div>
-                    <div className="">
-                        <h1 className="text-xl font-sans text-blue-500">username</h1>
-                        <p className="font-medium text-blue-500">explain user</p>
-                    </div>
-
-                </div>
-                <h1 className="text-sm text-neutral-600">5m ago</h1>
-            </div>
-        </div>
+                )
+            })}
+        </div >
     )
 }
 export default Sidebar

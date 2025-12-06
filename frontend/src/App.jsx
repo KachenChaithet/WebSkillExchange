@@ -5,7 +5,6 @@ import MySkill from './Page/MySkillPage'
 import MessagePage from './Page/MessagePage'
 import LoginPage from './Page/LoginPage'
 import SignUpPage from './Page/SignUpPage'
-import RequireAuth from './Middlewere/RequireAuth'
 import ProtectedLayout from './Middlewere/ProtectedLayout'
 import ConnectPage from './Page/ConnectPage'
 import { useEventUser } from './Store/useUserStore'
@@ -16,18 +15,38 @@ import { useChatStore } from './Store/useChatStore'
 function App() {
 
   const { getToken } = useAuth()
+  const { isLoaded } = useUser()
   const fetchusers = useEventUser((e) => e.fetchuser)
   const setToken = useChatStore((e) => e.setToken)
-
+  const initSocket = useChatStore((e) => e.initSocket)
+  const disconnectSocket = useChatStore((e) => e.disconnectSocket)
+  const currentUser = useChatStore(e => e.currentUser)
 
   useEffect(() => {
+    if (!isLoaded) return
+
     const loadUsers = async () => {
       const token = await getToken()
-      await fetchusers(token)
+
+      if (!token) return
+
+      const prevToken = useChatStore.getState().token
+      if (prevToken !== token) {
+        await setToken(token)   // set token แค่ถ้า token เปลี่ยน
+      }
+
       await setToken(token)
+      await fetchusers(token)
     }
     loadUsers()
-  }, [getToken, fetchusers, MessagePage])
+  }, [isLoaded])
+
+  useEffect(() => {
+    if (!currentUser) return
+    initSocket()
+    return () => disconnectSocket()
+  }, [currentUser])
+
 
   return (
     <>

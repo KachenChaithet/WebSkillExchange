@@ -10,14 +10,20 @@ export const ChatStore = (set, get) => ({
     currentFriend: null,
     token: null,
     friend: null,
+    onlineUsers: [],
 
     setToken: (tk) => set({ token: tk }),
     setCurrentUser: (user) => set({ currentUser: user }),
     setFriend: (friend) => set({ currentFriend: friend }),
     setSelcetFriend: (friend) => set({ friend: friend }),
 
+
+
+    handleOnlineUsers: (list) => {
+        set({ onlineUsers: list })
+    },
     initSocket: () => {
-        const { currentUser } = get()
+        const { currentUser, handleOnlineUsers } = get()
         const socket = io('http://localhost:5000', {
             query: {
                 userId: currentUser
@@ -29,6 +35,8 @@ export const ChatStore = (set, get) => ({
                 message: [...get().message, msg]
             })
         })
+
+        socket.on('onlineUsers', handleOnlineUsers)
 
         set({ socket })
     },
@@ -51,11 +59,15 @@ export const ChatStore = (set, get) => ({
         }
         set({ socket: null })
     },
-    fetchMessage: async (friend) => {
-        const { token } = get()
+    fetchMessage: async (friend, getToken) => {
+
+        const token = await getToken()  
+        if (!token) return 'not token'
+
         const msg = await api.message.getmessages('/message', token, friend)
         set({ message: msg })
-    }
+    },
+
 })
 
 export const useChatStore = create(ChatStore)

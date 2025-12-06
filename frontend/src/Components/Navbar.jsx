@@ -10,7 +10,7 @@ const Navbar = () => {
     ];
 
     return (
-        <div className="bg-white max-h-[80px] p-6 flex justify-between items-center shadow-sm">
+        <div className="bg-white max-h-[80] p-6 flex justify-between items-center shadow-sm">
             <h1 className="text-3xl">Logo</h1>
             <ul className="flex text-xl font-semibold text-neutral-400 gap-8">
                 {menuItems.map(item => (

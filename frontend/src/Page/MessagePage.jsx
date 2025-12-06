@@ -6,22 +6,17 @@ import HeaderChat from "../Components/Message/HeaderChat"
 import { useEventUser } from "../Store/useUserStore"
 import { useUser } from "@clerk/clerk-react"
 import InputChat from "../Components/Message/InputChat"
-import { useChatStore } from "../Store/useChatStore"
 
 const MessagePage = () => {
     const fetchFriend = useEventUser((e) => e.fetchFriend)
     const friends = useEventUser((e) => e.friends)
-    const initSocket = useChatStore((e) => e.initSocket)
-    const disconnectSocket = useChatStore((e) => e.disconnectSocket)
+
     const { user } = useUser();
 
 
 
 
-    useEffect(() => {
-        initSocket()
-        return () => disconnectSocket()
-    }, [])
+
 
     useEffect(() => {
         fetchFriend(user.id)

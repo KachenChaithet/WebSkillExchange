@@ -27,7 +27,6 @@ const CardUserConnect = ({ id, img, name, stack = [], title, status, user }) => 
 
     }
 
-    console.log(status);
 
     return (
         <div className="min-w-[400px] flex flex-col items-center bg-white p-4 gap-4 rounded-xl">
