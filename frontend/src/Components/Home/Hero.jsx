@@ -1,9 +1,16 @@
 import { Search } from "lucide-react"
 import { useState } from "react"
+import ModalRequestSkill from "../modal/ModalForm"
 
 const Hero = () => {
     const [searchTerm, setSearchTerm] = useState('')
+    const [openForm, setOpenForm] = useState(false)
+
+    console.log(openForm);
+
     return (<>
+
+        {openForm && <ModalRequestSkill />}
         <div className="flex flex-col items-center justify-center min-h-[600px] gap-10 ">
             {/* Text */}
             <div className="space-y-2 text-center">
@@ -26,7 +33,7 @@ const Hero = () => {
             {/* Offen and Request */}
             <div className="flex gap-2">
                 <button className="bg-[#2b8cee] text-white py-3 min-w-[220px] text-xl font-semibold rounded-md hover:bg-blue-600">Offer a Skill</button>
-                <button className="border-2 border-neutral-200 bg-white  py-3 min-w-[220px] text-xl font-semibold rounded-md hover:bg-neutral-200">Request a Skill</button>
+                <button className="border-2 border-neutral-200 bg-white  py-3 min-w-[220px] text-xl font-semibold rounded-md hover:bg-neutral-200" onClick={() => setOpenForm((prev) => !prev)}>Request a Skill</button>
             </div>
         </div>
     </>

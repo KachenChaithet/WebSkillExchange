@@ -5,7 +5,6 @@ const RecentRequests = () => {
     if (!users || users.length === 0) {
         return <div className="">Loading...</div>
     }
-console.log(users);
 
     const requests = users.filter((user) => user.status === 'pending_received')
 
