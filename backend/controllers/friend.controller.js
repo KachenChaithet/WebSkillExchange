@@ -169,7 +169,6 @@ export const getAllFriends = async (req, res) => {
     }
 
     try {
-        // query friends ทั้งสองฝั่ง
         const friends = await prisma.friendship.findMany({
             where: {
                 OR: [
@@ -200,7 +199,6 @@ export const getRelatedUsers = async (req, res) => {
     if (!currentUserId) return res.status(400).json({ message: "currentUserId is required" });
 
     try {
-        // ดึง friendships ของเรา
         const friendships = await prisma.friendship.findMany({
             where: {
                 OR: [
@@ -210,7 +208,6 @@ export const getRelatedUsers = async (req, res) => {
             }
         });
 
-        // ดึง friendRequests ของเรา (pending)
         const friendRequests = await prisma.friendRequest.findMany({
             where: {
                 OR: [
@@ -221,7 +218,6 @@ export const getRelatedUsers = async (req, res) => {
             }
         });
 
-        // รวม clerkId ทั้งหมดที่เกี่ยวข้อง
         const relatedIds = new Set();
 
         friendships.forEach(f => {
@@ -232,12 +228,10 @@ export const getRelatedUsers = async (req, res) => {
             relatedIds.add(fr.senderId === currentUserId ? fr.receiverId : fr.senderId);
         });
 
-        // ดึงข้อมูล user ทั้งหมดที่เกี่ยวข้อง
         const users = await prisma.user.findMany({
             where: { clerkId: { in: Array.from(relatedIds) } }
         });
 
-        // เพิ่มสถานะให้แต่ละ user
         const usersWithStatus = users.map(user => {
             if (friendships.some(f => f.user1Id === currentUserId && f.user2Id === user.clerkId || f.user2Id === currentUserId && f.user1Id === user.clerkId)) {
                 return { ...user, status: "friend" };

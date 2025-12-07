@@ -1,11 +1,22 @@
-import { Search } from "lucide-react"
+import { Filter, Search } from "lucide-react"
 import Navbar from "../Components/Navbar"
 import CardUserConnect from "../Components/Cards/CardUserConnect"
 import { useEventUser } from "../Store/useUserStore"
+import { useState } from "react"
 
 const ConnectPage = () => {
     const users = useEventUser((e) => e.userAll)
+    const [searchTerm, setSearchTerm] = useState('')
 
+    if (!users || users.length === 0) {
+        return <div className="">Loading...</div>
+    }
+    console.log(users);
+
+    const filterUsers = users.filter((user) =>
+        user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.status?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
 
 
     return (
@@ -24,6 +35,8 @@ const ConnectPage = () => {
                             <Search className="text-neutral-500" />
                         </div>
                         <input
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            value={searchTerm}
                             type="text"
                             placeholder="Search by name,username or skill..."
                             className="flex-1 px-4 py-3 text-lg font-medium outline-none focus:ring-2 focus:ring-neutral-200"
@@ -31,8 +44,12 @@ const ConnectPage = () => {
                     </div>
                 </div>
                 <div className="flex flex-wrap justify-center gap-6 mt-10">
-                    {users?.length > 0 ? (
-                        users.map((user) => (
+                    {filterUsers.length === 0 && (
+                        <div className="">not found</div>
+                    )}
+
+                    {
+                        filterUsers.map((user) => (
                             <CardUserConnect
                                 user={user}
                                 key={user.id}
@@ -43,9 +60,7 @@ const ConnectPage = () => {
                                 status={user.status}
                             />
                         ))
-                    ) : (
-                        <div className="text-2xl">Loading...</div>
-                    )}
+                    }
                 </div>
 
 

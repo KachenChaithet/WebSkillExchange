@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { api } from '../lib/api'
-import { useUser } from '@clerk/clerk-react'
+import { useChatStore } from './useChatStore'
 
 export const EventUser = (set, get) => ({
     token: '',
@@ -10,6 +10,10 @@ export const EventUser = (set, get) => ({
 
     fetchuser: async (token) => {
         try {
+            if (!token) {
+                console.warn("❗ No token provided to fetchuser");
+                return;
+            }
             const userall = await api.users.getall('/users', token)
             const { users } = userall
 
@@ -24,7 +28,6 @@ export const EventUser = (set, get) => ({
     addFriend: async (payload) => {
         try {
             const { token } = get()
-            console.log(token);
 
             await api.friends.request('/friends/request', payload, token)
             await get().fetchuser(token)

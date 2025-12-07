@@ -7,6 +7,12 @@ const PersonallzedFeed = () => {
     const data = [
         { name: 'kachen chiyathet', img: 'https://cdn-icons-png.flaticon.com/512/219/219983.png', explain: 'by karsocool', tags: ['react', 'java'], title: 'learn to react', text: 'I love street food thailand and i like your' },
         { name: 'kachen chiyathet', img: 'https://cdn-icons-png.flaticon.com/512/219/219983.png', explain: 'by karsocool', tags: ['react', 'java'], title: 'learn to react', text: 'I love street food thailand and i like your' },
+        { name: 'kachen chiyathet', img: 'https://cdn-icons-png.flaticon.com/512/219/219983.png', explain: 'by karsocool', tags: ['react', 'java'], title: 'learn to react', text: 'I love street food thailand and i like your' },
+        { name: 'kachen chiyathet', img: 'https://cdn-icons-png.flaticon.com/512/219/219983.png', explain: 'by karsocool', tags: ['react', 'java'], title: 'learn to react', text: 'I love street food thailand and i like your' },
+        { name: 'kachen chiyathet', img: 'https://cdn-icons-png.flaticon.com/512/219/219983.png', explain: 'by karsocool', tags: ['react', 'java'], title: 'learn to react', text: 'I love street food thailand and i like your' },
+        { name: 'kachen chiyathet', img: 'https://cdn-icons-png.flaticon.com/512/219/219983.png', explain: 'by karsocool', tags: ['react', 'java'], title: 'learn to react', text: 'I love street food thailand and i like your' },
+        { name: 'kachen chiyathet', img: 'https://cdn-icons-png.flaticon.com/512/219/219983.png', explain: 'by karsocool', tags: ['react', 'java'], title: 'learn to react', text: 'I love street food thailand and i like your' },
+        { name: 'kachen chiyathet', img: 'https://cdn-icons-png.flaticon.com/512/219/219983.png', explain: 'by karsocool', tags: ['react', 'java'], title: 'learn to react', text: 'I love street food thailand and i like your' },
     ]
     return (
         <>

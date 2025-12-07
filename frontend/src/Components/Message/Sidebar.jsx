@@ -1,6 +1,7 @@
 import { Search } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { useChatStore } from "../../Store/useChatStore"
+import { useState } from "react"
 
 const Sidebar = ({ friends }) => {
     const navigate = useNavigate()
@@ -8,13 +9,17 @@ const Sidebar = ({ friends }) => {
     const onlineUsers = useChatStore((e) => e.onlineUsers)
     const currentFriend = useChatStore((e) => e.currentFriend)
 
-
+    const [searchTerm, setSearchTerm] = useState('')
 
     const handleSelectFriend = (friend) => {
         setSelcetFriend(friend)
         navigate(`/message/${friend.username}`)
 
     }
+
+    const filterFriends = friends.filter((friend) =>
+        friend.username.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+    )
 
     return (
         <div className="w-100 max-h-screen h-[860px]  bg-white border border-neutral-200 overflow-y-auto ">
@@ -29,6 +34,8 @@ const Sidebar = ({ friends }) => {
                         <Search className="text-neutral-500" size={20} />
                     </div>
                     <input
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        value={searchTerm}
                         type="text"
                         placeholder="Search conversaions"
                         className="flex-1 px-1 py-1 text-md font-medium outline-none "
@@ -36,9 +43,13 @@ const Sidebar = ({ friends }) => {
                 </div>
             </div>
 
+            {filterFriends.length === 0 && (
+                <div className="p-4 text-neutral-500">No users found</div>
+            )}
+
 
             {/* UsersConversations */}
-            {friends.map((person) => {
+            {filterFriends.map((person) => {
                 const isOnline = onlineUsers.includes(person.clerkId)
 
                 const activeFriend = currentFriend === person.clerkId
@@ -47,7 +58,7 @@ const Sidebar = ({ friends }) => {
 
 
                 return (
-                    <div onClick={() => handleSelectFriend(person)} className={` p-4 flex items-center justify-between border-l-3  ${activeFriend ? ' border-[#2287ee] bg-[#e9f3fd]' : 'border-transparent'} hover:bg-[#e9f3fd]  `}>
+                    <div key={person.clerkId} onClick={() => handleSelectFriend(person)} className={` p-4 flex items-center justify-between border-l-3  ${activeFriend ? ' border-[#2287ee] bg-[#e9f3fd]' : 'border-transparent'} hover:bg-[#e9f3fd]  `}>
                         <div className="flex items-center gap-4">
                             <div className="relative w-10 h-10">
                                 <img src={person.avatarUrl} alt="" className="w-10 h-10 rounded-full" />

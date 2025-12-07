@@ -32,7 +32,7 @@ function App() {
 
       const prevToken = useChatStore.getState().token
       if (prevToken !== token) {
-        await setToken(token)   // set token แค่ถ้า token เปลี่ยน
+        await setToken(token)
       }
 
       await setToken(token)

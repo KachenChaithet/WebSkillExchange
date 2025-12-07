@@ -22,6 +22,7 @@ const CardUserConnect = ({ id, img, name, stack = [], title, status, user }) => 
 
         } else if (action === 'connect') {
             addFriend(id)
+            updateUserStatus(id, 'pending_sent')
         }
 
 

@@ -7,7 +7,7 @@ const TrendingSkill = () => {
         "Public Speaking"
     ];
     return (
-        < div className="w-full max-w-[300px] bg-white rounded-2xl p-6 shadow-sm border border-gray-100" >
+        < div className="w-full max-w-[300px]  bg-white rounded-2xl p-6 shadow-sm border border-gray-100" >
 
             < h2 className="text-xl font-bold text-gray-900 mb-6" >
                 Trending Skills

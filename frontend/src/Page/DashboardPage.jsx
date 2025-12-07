@@ -7,13 +7,17 @@ import RecentRequests from "../Components/Home/RecentRequests"
 const DashboardPage = () => {
     return (
         <>
-            <div className='h-screen bg-[#f6f7f8]'>
+            <div className='h-full bg-[#f6f7f8]'>
                 <Navbar />
                 <Hero />
-                <div className="flex flex-wrap justify-center gap-8">
-                    <TrendingSkill />
+                <div className="flex flex-wrap justify-center gap-8 ">
+                    <div className="sticky top-20 h-fit">
+                        <TrendingSkill />
+                    </div>
                     <PersonallzedFeed />
-                    <RecentRequests />
+                    <div className="sticky top-20 h-fit">
+                        <RecentRequests />
+                    </div>
                 </div>
             </div>
         </>
