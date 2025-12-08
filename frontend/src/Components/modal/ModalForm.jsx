@@ -2,7 +2,7 @@ import InputForm from "../Input/InputForm"
 import InputFormTextArea from "../Input/InputFormTextArea"
 import InputTerms from "../Input/InputTerms"
 
-const ModalForm = () => {
+const ModalForm = ({ isClose }) => {
     return (
         <div className="fixed inset-0 bg-neutral-100 z-9999 mx-auto flex  flex-col items-center justify-center ">
             <div className="space-y-4">
@@ -14,7 +14,11 @@ const ModalForm = () => {
 
                     <InputForm subject={'What skill do you need?'} title={'Skill Needed'} placeholder={'e.g..Figma UI/UX Design'} rule={'Be specific to attract the right talent.'} />
                     <InputFormTextArea placeholderTextArea={'Describe your project. goals, and what you expect from the expert...'} titleTextArea={'Detailed Description'} subject={'Describe your request in detail'} title={'Tags/Keywords'} placeholder={'e.g..Beginner-friendly, Urgent, Web Development'} rule={'Add up to 5 tags to help others discover your request'} />
-                    <InputTerms/>
+                    <InputTerms />
+                </div>
+                <div className="text-end space-x-2">
+                    <button onClick={isClose} className="px-3 py-2  rounded-lg  bg-neutral-200 font-semibold hover:bg-neutral-300">cancel</button>
+                    <button className="px-3 py-2  rounded-lg  text-white bg-blue-500 font-semibold hover:bg-blue-600">Post Request</button>
                 </div>
             </div>
 

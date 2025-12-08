@@ -10,7 +10,7 @@ const Hero = () => {
 
     return (<>
 
-        {openForm && <ModalRequestSkill />}
+        {openForm && <ModalRequestSkill isClose={() => setOpenForm((prev) => !prev)} />}
         <div className="flex flex-col items-center justify-center min-h-[600px] gap-10 ">
             {/* Text */}
             <div className="space-y-2 text-center">
