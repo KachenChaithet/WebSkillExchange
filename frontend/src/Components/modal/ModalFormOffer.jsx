@@ -1,0 +1,100 @@
+import { useState } from "react";
+import InputForm from "../Input/InputForm"
+import InputFormTextArea from "../Input/InputFormTextArea"
+import InputTerms from "../Input/InputTerms"
+
+const ModalFormOffer = ({ isClose }) => {
+    const [offering, setOffering] = useState("");
+
+
+    return (
+        <div className="fixed inset-0 bg-neutral-100 z-9999 mx-auto flex  flex-col items-center justify-center overflow-y-auto ">
+            <div className="space-y-4 max-w-[800px] overflow-x-auto w-[800px]">
+                <div className="">
+                    <h1 className="text-4xl font-semibold">Offer a skill</h1>
+                    <p className="text-md text-neutral-500">Add your skill to the exchage and connect with learners.</p>
+                </div>
+
+
+                <div className="bg-white p-4 rounded-xl space-y-4  shadow-md">
+
+                    <InputForm subject={'Skill Details'} title={'Skill Name'} placeholder={'e.g..Advanced Python Programming'} />
+                    <InputFormTextArea titleTextArea={'Detailed Description'} placeholderTextArea={'Describe what you offer, your experience, and what someone will learn or gain...'} />
+                    <InputFormTextArea title={'Categories'} placeholder={'Add another category...'} />
+
+                </div>
+
+                <div className="bg-white p-4 rounded-xl space-y-4  shadow-md">
+                    <h1 className="text-md font-semibold border-b border-neutral-200 pb-2 mb-2">Proficiency & Logistics</h1>
+
+                    <div className="">
+
+                        {/* Proficiency & Logistics */}
+                        <div className="flex">
+
+                            {/* skill leavel */}
+                            <div className="flex-1 flex flex-col gap-2">
+                                <label htmlFor="" className="font-semibold">Your SKill Level</label>
+                                <div className="flex gap-2">
+                                    <button className="border border-neutral-300  rounded-md px-4 py-2">Beginner</button>
+                                    <button className="border border-neutral-300  rounded-md px-4 py-2">Intermediate</button>
+                                    <button className="border border-neutral-300  rounded-md px-4 py-2">Expert</button>
+                                </div>
+                            </div>
+
+                            {/* date */}
+                            <div className="flex-1 flex flex-col gap-2">
+                                <label htmlFor="" className="font-semibold">Availability</label>
+                                <input type="date" className="text-neutral-500 border outline-none border-neutral-400 rounded-md p-2" />
+
+                            </div>
+
+                        </div>
+
+                        {/* Offering Type */}
+                        <div className=" space-y-2 ">
+
+                            <h1 className="text-md font-semibold ">Offering Type</h1>
+
+                            <div className="flex gap-4">
+                                <label className="flex flex-1 items-start gap-2  border border-blue-500 bg-blue-50 p-2 rounded-md cursor-pointer ">
+                                    <input type="radio" value={'skillexchange'} onChange={(e) => setCompensation(e.target.value)} className=" border border-neutral-400 appearance-none w-4 h-4 rounded-full checked:border-4 checked:border-blue-500 checked:bg-white mt-1" />
+                                    <div className="">
+                                        <span className="font-semibold">Skill Exchange</span>
+                                        <p className="text-sm text-neutral-600">Offer your skill in return for another.</p>
+                                    </div>
+                                </label>
+
+
+                                <label className="flex flex-1 items-start gap-2  border border-neutral-400 p-2 rounded-md cursor-pointer ">
+                                    <input type="radio" value={'paidservice'} onChange={(e) => setCompensation(e.target.value)} className="border border-neutral-400 appearance-none w-4 h-4 rounded-full checked:border-4 checked:border-blue-500 checked:bg-white mt-1" />
+                                    <div className="">
+                                        <span className="font-semibold">Paid Service</span>
+                                        <p className="text-sm text-neutral-600">Charge a fee for your skill session.</p>
+                                    </div>
+                                </label>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div className="text-end space-x-2">
+                    <button onClick={isClose} className="px-3 py-2  rounded-lg  bg-neutral-200 font-semibold hover:bg-neutral-300">cancel</button>
+                    <button className="px-3 py-2  rounded-lg  text-white bg-blue-500 font-semibold hover:bg-blue-600">Post Request</button>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    )
+
+}
+export default ModalFormOffer

@@ -2,7 +2,6 @@ import { useState } from "react";
 
 const InputTerms = () => {
     const [compensation, setCompensation] = useState("");
-    console.log(compensation);
 
     return (
         <div className="">
