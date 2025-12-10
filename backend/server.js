@@ -9,7 +9,10 @@ import { clerkMiddleware } from '@clerk/express'
 import { PrismaClient } from '@prisma/client'
 import { initSocket } from './sockets/index.js'
 import multer from 'multer'
-import { error } from 'console'
+import path from 'path'
+import fs from 'fs'
+
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/')
@@ -17,6 +20,11 @@ const storage = multer.diskStorage({
     filename: function (req, file, cb) {
         const fileName = `${Date.now()}-${file.originalname}`
         cb(null, fileName)
+        req.on('aborted', () => {
+            // delete file that not successfully
+            const fullPaht = path.join('uploads/', fileName)
+            fs.unlinkSync(fullPaht)
+        })
     }
 })
 const upload = multer({
@@ -24,13 +32,13 @@ const upload = multer({
     limits: {
         fileSize: 1024 * 1024 * 2
     },
-    // fileFilter: (req, file, cb) => {
-    //     if (file.mimetype === 'image/jpeg') {
-    //         cb(null, true)
-    //     } else {
-    //         cb(new Error('not allow other file without image/png'), false)
-    //     }
-    // }
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype === 'image/jpeg') {
+            cb(null, true)
+        } else {
+            cb(new Error('not allow other file without image/png'), false)
+        }
+    }
 })
 
 

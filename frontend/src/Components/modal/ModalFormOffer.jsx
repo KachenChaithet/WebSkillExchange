@@ -18,23 +18,29 @@ const ModalFormOffer = ({ isClose }) => {
     const cancelUpload = () => {
         if (cancelRef.current) {
             cancelRef.current.abort()
-
-
+        }
+        setFile(null)
+        setProgress(0)
+        if (fileRef.current) {
+            fileRef.current.value = ''
         }
     }
 
     const handleUploadFile = async () => {
+        if (!file) {
+            alert('Please select a file first')
+            return
+        }
         setProgress(0)
-        console.log(file);
 
-        // if (file.size > 2 * 1024 * 1024) {
-        //     alert("File must be smaller than 5MB");
-        //     return;
-        // }
-        // if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.type)) {
-        //     alert("Only JPEG or PNG allowed");
-        //     return
-        // }
+        if (file.size > 2 * 1024 * 1024) {
+            alert("File must be smaller than 5MB");
+            return;
+        }
+        if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.type)) {
+            alert("Only JPEG or PNG allowed");
+            return
+        }
 
         const formData = new FormData()
         formData.append('test', file)
