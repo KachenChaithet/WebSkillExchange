@@ -2,13 +2,38 @@ import express from 'express'
 import cors from 'cors'
 import { createServer } from 'http'
 import dotenv from 'dotenv'
-import { Server } from 'socket.io'
 import user from './routers/user.router.js'
 import friend from './routers/friend.router.js'
 import message from './routers/message.router.js'
 import { clerkMiddleware } from '@clerk/express'
 import { PrismaClient } from '@prisma/client'
 import { initSocket } from './sockets/index.js'
+import multer from 'multer'
+import { error } from 'console'
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        const fileName = `${Date.now()}-${file.originalname}`
+        cb(null, fileName)
+    }
+})
+const upload = multer({
+    storage,
+    limits: {
+        fileSize: 1024 * 1024 * 2
+    },
+    // fileFilter: (req, file, cb) => {
+    //     if (file.mimetype === 'image/jpeg') {
+    //         cb(null, true)
+    //     } else {
+    //         cb(new Error('not allow other file without image/png'), false)
+    //     }
+    // }
+})
+
+
 
 const prisma = new PrismaClient()
 dotenv.config()
@@ -32,6 +57,16 @@ app.use('/friends', friend)
 
 // messages
 app.use('/message', message)
+
+app.post('/upload', (req, res) => {
+    upload.single('test')(req, res, (err) => {
+        if (err) {
+            return res.status(400).json({ message: err.message })
+        }
+        res.json({ message: 'upload success' })
+
+    })
+})
 
 
 // socket

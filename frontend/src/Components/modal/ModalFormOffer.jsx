@@ -1,12 +1,77 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import InputForm from "../Input/InputForm"
 import InputFormTextArea from "../Input/InputFormTextArea"
 import InputTerms from "../Input/InputTerms"
+import axios from 'axios'
+
 
 const ModalFormOffer = ({ isClose }) => {
     const [offering, setOffering] = useState("");
     const [level, setLevel] = useState('')
     const levels = ["Beginner", "Intermediate", "Expert"]
+    const [file, setFile] = useState(null)
+    const [progress, setProgress] = useState(0)
+    const fileRef = useRef(null)
+    const cancelRef = useRef(null)
+
+
+    const cancelUpload = () => {
+        if (cancelRef.current) {
+            cancelRef.current.abort()
+
+
+        }
+    }
+
+    const handleUploadFile = async () => {
+        setProgress(0)
+        console.log(file);
+
+        // if (file.size > 2 * 1024 * 1024) {
+        //     alert("File must be smaller than 5MB");
+        //     return;
+        // }
+        // if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.type)) {
+        //     alert("Only JPEG or PNG allowed");
+        //     return
+        // }
+
+        const formData = new FormData()
+        formData.append('test', file)
+        const controller = new AbortController();
+        cancelRef.current = controller
+
+        try {
+            const res = await axios.post('http://localhost:5000/upload', formData, {
+                signal: controller.signal,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                onUploadProgress: function (progressValue) {
+
+
+                    setProgress(progressValue.progress * 100)
+                },
+            })
+            setFile(null)
+            if (fileRef.current) {
+                fileRef.current.value = ''
+            }
+            console.log(res.data);
+
+
+        } catch (error) {
+            if (error.code === "ERR_CANCELED") {
+                console.log("Upload canceled");
+                return;
+            }
+
+            console.log(error);
+            alert('something wrong when upload!');
+            setProgress(0);
+        }
+    }
+
     return (
         <div className="fixed inset-0 bg-neutral-100 z-9999 mx-auto flex  flex-col items-center justify-center overflow-y-auto ">
             <div className="space-y-4 max-w-[800px] overflow-x-auto w-[800px]">
@@ -77,6 +142,14 @@ const ModalFormOffer = ({ isClose }) => {
                                     </div>
                                 </label>
                             </div>
+                            <div className="">
+                                <div className="space-x-4">
+                                    <input type="file" ref={fileRef} className="border" onChange={(e) => setFile(e.target.files[0])} />
+                                    <button className="border  rounded-2xl" onClick={handleUploadFile}>upload</button>
+                                    <button className="border  rounded-2xl" onClick={cancelUpload}>cancel</button>
+                                </div>
+                                <progress max={100} value={progress} className="rounded-xl w-full" />
+                            </div>
 
 
                         </div>
@@ -100,4 +173,4 @@ const ModalFormOffer = ({ isClose }) => {
     )
 
 }
-export default ModalFormOffer
+export default ModalFormOffer   
