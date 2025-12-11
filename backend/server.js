@@ -33,7 +33,7 @@ const upload = multer({
         fileSize: 1024 * 1024 * 2
     },
     fileFilter: (req, file, cb) => {
-        if (file.mimetype === 'image/jpeg') {
+        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
             cb(null, true)
         } else {
             cb(new Error('not allow other file without image/png'), false)

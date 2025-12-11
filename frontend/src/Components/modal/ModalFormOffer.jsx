@@ -17,8 +17,21 @@ const ModalFormOffer = ({ isClose }) => {
     const cancelRef = useRef(null)
     const filePickerRef = useRef(null);
     const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+    const MAX_TOTAL_SIZE = 5 * 1024 * 1024; // 20 MB
     const maxSize = 2 * 1024 * 1024; // 2 MB
-    console.log(file);
+    const [dropActive, setDropActive] = useState(false);
+
+
+
+    const checkTotalSize = (newFiles) => {
+        const totalSize = [...file, ...newFiles]
+            .reduce((sum, f) => sum + f.size, 0);
+
+        console.log(totalSize);
+
+
+        return totalSize <= MAX_TOTAL_SIZE;
+    };
 
     const handleRemoveFile = (index) => {
         setFile((prev) => prev.filter((_, i) => i !== index))
@@ -49,6 +62,10 @@ const ModalFormOffer = ({ isClose }) => {
         }
 
 
+        if (file.length > 5) {
+            alert('limit 5 photo')
+            return
+        }
         setProgress(0);
 
         const formData = new FormData()
@@ -86,7 +103,7 @@ const ModalFormOffer = ({ isClose }) => {
         }
     }
 
-    const handleSelectFiels = (e) => {
+    const handleSelectFiles = (e) => {
         const selected = Array.from(e.target.files);
 
 
@@ -94,6 +111,10 @@ const ModalFormOffer = ({ isClose }) => {
         const invalidType = selected.some(f => !allowedTypes.includes(f.type));
 
 
+        if (!checkTotalSize(file)) {
+            alert("Total files exceed 20 MB limit");
+            return;
+        }
 
         if (invalidSize) {
             alert("Some files are larger than 2MB");
@@ -108,6 +129,38 @@ const ModalFormOffer = ({ isClose }) => {
         const newPreviews = selected.map(f => URL.createObjectURL(f));
         setFile((prev) => [...prev, ...selected]);
         setPreviews((prev) => [...prev, ...newPreviews]);
+    }
+
+    const handleSelectDropFiles = (e) => {
+        e.preventDefault();
+        setDropActive(false);
+        const currentFile = Array.from(e.dataTransfer.files)
+        const newPreviews = currentFile.map(f => URL.createObjectURL(f));
+
+
+        if (!checkTotalSize(file)) {
+            alert("Total files exceed 20 MB limit");
+            return;
+        }
+
+        const invalidSize = currentFile.some(f => f.size > maxSize);
+        const invalidType = currentFile.some(f => !allowedTypes.includes(f.type));
+
+
+
+        if (invalidSize) {
+            alert("Some files are larger than 2MB");
+            return;
+        }
+
+        if (invalidType) {
+            alert("Only JPG, PNG or PDF allowed");
+            return;
+        }
+
+        setFile((prev) => [...prev, ...currentFile])
+        setPreviews((prev) => [...prev, ...newPreviews])
+
     }
 
     return (
@@ -196,15 +249,27 @@ const ModalFormOffer = ({ isClose }) => {
                         <p className="font-medium text-sm text-neutral-500">Showcase yoru skill with images of past work or a short introuductory video</p>
                     </div>
 
+                    <div
+                        onDragEnter={() => setDropActive(true)}
+                        onDragLeave={() => setDropActive(false)}
 
-                    <div className="h-[200px] bg-neutral-50 rounded-xl border-2 border-dashed border-neutral-300 flex flex-col items-center justify-center">
+                        onDragOver={(e) => {
+                            e.preventDefault();
+                        }}
+
+                        onDrop={handleSelectDropFiles}
+
+                        className={`h-[200px] rounded-xl border-2 border-dashed flex flex-col items-center justify-center z-9999
+                                ${dropActive ? "bg-purple-50 border-purple-400" : "bg-neutral-50 border-neutral-300"}
+                        `}
+                    >
                         <div className="px-2 py-3 bg-purple-100 rounded-full">
                             <CloudUpload className="text-purple-500" />
                         </div>
                         <div className="text-center">
-                            <h1 className="font-semibold">Drag & drop files here</h1>
+                            <h1 className="font-semibold" >Drag & drop files here</h1>
                             <p className="text-neutral-700">or</p>
-                            <input type="file" accept="image/*" ref={filePickerRef} multiple className="hidden" onChange={handleSelectFiels} />
+                            <input type="file" accept="image/*" ref={filePickerRef} multiple className="hidden" onChange={handleSelectFiles} />
                             <button className="px-2 py-1 bg-white border rounded-md border-neutral-300" onClick={openPicker}>Browse Files</button>
                             <p className="text-neutral-500 text-xs">Supports:JPG,PNG,Max size:2mb</p>
                         </div>
@@ -255,7 +320,7 @@ const ModalFormOffer = ({ isClose }) => {
 
             </div>
 
-        </div>
+        </div >
     )
 
 }
