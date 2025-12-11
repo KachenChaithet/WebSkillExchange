@@ -67,7 +67,7 @@ app.use('/friends', friend)
 app.use('/message', message)
 
 app.post('/upload', (req, res) => {
-    upload.single('test')(req, res, (err) => {
+    upload.array('test')(req, res, (err) => {
         if (err) {
             return res.status(400).json({ message: err.message })
         }
@@ -87,4 +87,4 @@ server.listen(port, () => {
     console.log('server run on http://localhost:' + port);
     console.log('ws ready ws://localhost:' + port);
 
-})
+})  

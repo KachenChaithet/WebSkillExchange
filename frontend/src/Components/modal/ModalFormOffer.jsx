@@ -3,16 +3,32 @@ import InputForm from "../Input/InputForm"
 import InputFormTextArea from "../Input/InputFormTextArea"
 import InputTerms from "../Input/InputTerms"
 import axios from 'axios'
+import { CloudUpload, Trash2 } from "lucide-react";
 
 
 const ModalFormOffer = ({ isClose }) => {
     const [offering, setOffering] = useState("");
     const [level, setLevel] = useState('')
     const levels = ["Beginner", "Intermediate", "Expert"]
-    const [file, setFile] = useState(null)
-    const [progress, setProgress] = useState(0)
+    const [file, setFile] = useState([])
+    const [previews, setPreviews] = useState([]);
+    const [progress, setProgress] = useState({})
     const fileRef = useRef(null)
     const cancelRef = useRef(null)
+    const filePickerRef = useRef(null);
+    const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+    const maxSize = 2 * 1024 * 1024; // 2 MB
+    console.log(file);
+
+    const handleRemoveFile = (index) => {
+        setFile((prev) => prev.filter((_, i) => i !== index))
+        setPreviews((prev) => prev.filter((_, i) => i !== index));
+    }
+
+
+    const openPicker = () => {
+        filePickerRef.current.click();
+    };
 
 
     const cancelUpload = () => {
@@ -27,23 +43,19 @@ const ModalFormOffer = ({ isClose }) => {
     }
 
     const handleUploadFile = async () => {
-        if (!file) {
-            alert('Please select a file first')
-            return
-        }
-        setProgress(0)
-
-        if (file.size > 2 * 1024 * 1024) {
-            alert("File must be smaller than 5MB");
+        if (!file || file.length === 0) {
+            alert("Please select at least one file");
             return;
         }
-        if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.type)) {
-            alert("Only JPEG or PNG allowed");
-            return
-        }
+
+
+        setProgress(0);
 
         const formData = new FormData()
-        formData.append('test', file)
+        file.forEach((f) => {
+            formData.append('test', f)
+        })
+
         const controller = new AbortController();
         cancelRef.current = controller
 
@@ -54,18 +66,14 @@ const ModalFormOffer = ({ isClose }) => {
                     'Content-Type': 'multipart/form-data'
                 },
                 onUploadProgress: function (progressValue) {
-
-
                     setProgress(progressValue.progress * 100)
                 },
             })
-            setFile(null)
-            if (fileRef.current) {
-                fileRef.current.value = ''
-            }
+
+            setFile([])
+            setPreviews([])
+
             console.log(res.data);
-
-
         } catch (error) {
             if (error.code === "ERR_CANCELED") {
                 console.log("Upload canceled");
@@ -76,6 +84,30 @@ const ModalFormOffer = ({ isClose }) => {
             alert('something wrong when upload!');
             setProgress(0);
         }
+    }
+
+    const handleSelectFiels = (e) => {
+        const selected = Array.from(e.target.files);
+
+
+        const invalidSize = selected.some(f => f.size > maxSize);
+        const invalidType = selected.some(f => !allowedTypes.includes(f.type));
+
+
+
+        if (invalidSize) {
+            alert("Some files are larger than 2MB");
+            return;
+        }
+
+        if (invalidType) {
+            alert("Only JPG, PNG or PDF allowed");
+            return;
+        }
+
+        const newPreviews = selected.map(f => URL.createObjectURL(f));
+        setFile((prev) => [...prev, ...selected]);
+        setPreviews((prev) => [...prev, ...newPreviews]);
     }
 
     return (
@@ -148,14 +180,7 @@ const ModalFormOffer = ({ isClose }) => {
                                     </div>
                                 </label>
                             </div>
-                            <div className="">
-                                <div className="space-x-4">
-                                    <input type="file" ref={fileRef} className="border" onChange={(e) => setFile(e.target.files[0])} />
-                                    <button className="border  rounded-2xl" onClick={handleUploadFile}>upload</button>
-                                    <button className="border  rounded-2xl" onClick={cancelUpload}>cancel</button>
-                                </div>
-                                <progress max={100} value={progress} className="rounded-xl w-full" />
-                            </div>
+
 
 
                         </div>
@@ -165,10 +190,65 @@ const ModalFormOffer = ({ isClose }) => {
                 </div>
 
 
+                <div className="bg-white p-4 rounded-xl space-y-4  shadow-md">
+                    <div className="">
+                        <h1 className="text-md font-semibold ">Add Photos</h1>
+                        <p className="font-medium text-sm text-neutral-500">Showcase yoru skill with images of past work or a short introuductory video</p>
+                    </div>
+
+
+                    <div className="h-[200px] bg-neutral-50 rounded-xl border-2 border-dashed border-neutral-300 flex flex-col items-center justify-center">
+                        <div className="px-2 py-3 bg-purple-100 rounded-full">
+                            <CloudUpload className="text-purple-500" />
+                        </div>
+                        <div className="text-center">
+                            <h1 className="font-semibold">Drag & drop files here</h1>
+                            <p className="text-neutral-700">or</p>
+                            <input type="file" accept="image/*" ref={filePickerRef} multiple className="hidden" onChange={handleSelectFiels} />
+                            <button className="px-2 py-1 bg-white border rounded-md border-neutral-300" onClick={openPicker}>Browse Files</button>
+                            <p className="text-neutral-500 text-xs">Supports:JPG,PNG,Max size:2mb</p>
+                        </div>
+                    </div>
+
+                    <div className="">
+                        <div className="space-x-4">
+                            {/* <input type="file" ref={fileRef} className="border" onChange={(e) => setFile(e.target.files[0])} /> */}
+                            <button className="border  rounded-2xl" onClick={cancelUpload}>cancel</button>
+                            <progress max={100} value={progress} className="rounded-xl w-full" />
+                        </div>
+                        <div className="space-y-2">
+                            {file.map((file, index) => (
+                                <div key={index} className="relative w-full  rounded-md border border-neutral-200 flex items-center justify-between p-2">
+                                    <div className="flex gap-2 items-center">
+                                        <img
+                                            src={previews[index]}
+                                            className="w-14 h-14 object-cover rounded-lg "
+                                            alt="preview"
+                                        />
+                                        <div className="">
+                                            <h1>{file.name}</h1>
+                                            <p className="text-neutral-500">{(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+
+                                        </div>
+                                    </div>
+                                    <div className="" onClick={() => handleRemoveFile(index)}>
+                                        <Trash2 className="text-neutral-400" />
+
+                                    </div>
+
+
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                </div>
+
+
 
                 <div className="text-end space-x-2">
                     <button onClick={isClose} className="px-3 py-2  rounded-lg  bg-neutral-200 font-semibold hover:bg-neutral-300">cancel</button>
-                    <button className="px-3 py-2  rounded-lg  text-white bg-blue-500 font-semibold hover:bg-blue-600">Pulish Skill</button>
+                    <button onClick={handleUploadFile} className="px-3 py-2  rounded-lg  text-white bg-blue-500 font-semibold hover:bg-blue-600">Pulish Skill</button>
                 </div>
 
 
