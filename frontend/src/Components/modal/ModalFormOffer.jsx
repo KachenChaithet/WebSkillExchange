@@ -4,6 +4,7 @@ import InputFormTextArea from "../Input/InputFormTextArea"
 import InputTerms from "../Input/InputTerms"
 import axios from 'axios'
 import { CloudUpload, Trash2 } from "lucide-react";
+import { useEffect } from "react";
 
 
 const ModalFormOffer = ({ isClose }) => {
@@ -163,6 +164,16 @@ const ModalFormOffer = ({ isClose }) => {
 
     }
 
+
+    useEffect(() => {
+        // ปิด scroll เมื่อเปิด modal
+        document.body.style.overflow = "hidden";
+
+        return () => {
+            // เปิด scroll กลับเมื่อปิด modal
+            document.body.style.overflow = "auto";
+        };
+    }, []);
     return (
         <div className="fixed inset-0 bg-neutral-100 z-9999 mx-auto flex  flex-col items-center justify-center overflow-y-auto ">
             <div className="space-y-4 max-w-[800px] overflow-x-auto w-[800px]">
