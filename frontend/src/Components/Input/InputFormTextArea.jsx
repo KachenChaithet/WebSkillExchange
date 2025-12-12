@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { X } from 'lucide-react'
 
-const InputFormTextArea = ({ subject, title, placeholder, titleTextArea, placeholderTextArea, rule }) => {
+const InputFormTextArea = ({ subject, title, placeholder, titleTextArea, placeholderTextArea, rule, detailValue, onDetailChange, tagsValue, onAddTag, onRemoveTag }) => {
     const [stacks, setStacks] = useState([])
     const [inputStack, setInputStack] = useState('')
 
@@ -10,7 +10,7 @@ const InputFormTextArea = ({ subject, title, placeholder, titleTextArea, placeho
         if (e.key === 'Enter' && inputStack.trim()) {
             e.preventDefault()
             if (!stacks.includes(inputStack.trim()) && stacks.length < 5) {
-                setStacks([...stacks, inputStack.trim()])
+                onAddTag(inputStack.trim())
             } else {
                 return alert('you have this tag  or stak over')
             }
@@ -20,7 +20,7 @@ const InputFormTextArea = ({ subject, title, placeholder, titleTextArea, placeho
     }
 
     const handleRemoveStack = (index) => {
-        setStacks(stacks.filter((_, i) => i !== index))
+        onRemoveTag(index)
 
     }
 
@@ -30,7 +30,7 @@ const InputFormTextArea = ({ subject, title, placeholder, titleTextArea, placeho
 
             <div className="flex flex-col gap-2 mb-2">
                 <label htmlFor="" className="text-md font-sans">{titleTextArea}</label>
-                {placeholderTextArea && <textarea type="text" placeholder={placeholderTextArea} className="text-sm border border-neutral-200 rounded-md px-3 py-1 outline-none" />
+                {placeholderTextArea && <textarea type="text" value={detailValue} onChange={onDetailChange} placeholder={placeholderTextArea} className="text-sm border border-neutral-200 rounded-md px-3 py-1 outline-none" />
                 }
             </div>
             <div className="flex flex-col gap-2 mb-2 ">
@@ -39,7 +39,7 @@ const InputFormTextArea = ({ subject, title, placeholder, titleTextArea, placeho
 
                     <div className="flex items-center border-neutral-200 border p-2 rounded-md overflow-y-auto">
                         <div className="flex flex-wrap gap-2 ">
-                            {stacks.map((stack, index) => (
+                            {tagsValue.map((stack, index) => (
                                 <span key={index} className="border-none bg-blue-50 text-blue-400 font-semibold  rounded-full px-2" >
                                     {stack}
 

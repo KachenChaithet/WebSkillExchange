@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const InputTerms = () => {
+const InputTerms = ({ completionTimeValue, onChangeTimeValue }) => {
     const [compensation, setCompensation] = useState("");
 
     return (
