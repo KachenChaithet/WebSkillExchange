@@ -40,7 +40,7 @@ const InputFormTextArea = ({ subject, title, placeholder, titleTextArea, placeho
                     <div className="flex items-center border-neutral-200 border p-2 rounded-md overflow-y-auto">
                         <div className="flex flex-wrap gap-2 ">
                             {stacks.map((stack, index) => (
-                                <span className="border-none bg-blue-50 text-blue-400 font-semibold  rounded-full px-2" >
+                                <span key={index} className="border-none bg-blue-50 text-blue-400 font-semibold  rounded-full px-2" >
                                     {stack}
 
                                     <button onClick={() => handleRemoveStack(index)} className="text-center"><X className="w-3 h-3" /> </button>

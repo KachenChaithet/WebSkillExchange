@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import user from './routers/user.router.js'
 import friend from './routers/friend.router.js'
 import message from './routers/message.router.js'
+import post from './routers/post.router.js'
 import { clerkMiddleware } from '@clerk/express'
 import { PrismaClient } from '@prisma/client'
 import { initSocket } from './sockets/index.js'
@@ -65,6 +66,8 @@ app.use('/friends', friend)
 
 // messages
 app.use('/message', message)
+
+app.use('/post', post)
 
 app.post('/upload', (req, res) => {
     upload.array('test')(req, res, (err) => {

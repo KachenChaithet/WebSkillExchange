@@ -13,9 +13,6 @@ const ModalFormOffer = ({ isClose }) => {
     const levels = ["Beginner", "Intermediate", "Expert"]
     const [file, setFile] = useState([])
     const [previews, setPreviews] = useState([]);
-    const [progress, setProgress] = useState({})
-    const fileRef = useRef(null)
-    const cancelRef = useRef(null)
     const filePickerRef = useRef(null);
     const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
     const MAX_TOTAL_SIZE = 5 * 1024 * 1024; // 20 MB
@@ -45,17 +42,7 @@ const ModalFormOffer = ({ isClose }) => {
     };
 
 
-    const cancelUpload = () => {
-        if (cancelRef.current) {
-            cancelRef.current.abort()
-        }
-        setFile(null)
-        setProgress(0)
-        if (fileRef.current) {
-            fileRef.current.value = ''
-        }
-    }
-
+ 
     const handleUploadFile = async () => {
         if (!file || file.length === 0) {
             alert("Please select at least one file");
@@ -92,6 +79,7 @@ const ModalFormOffer = ({ isClose }) => {
             setPreviews([])
 
             console.log(res.data);
+            alert('upload file success')
         } catch (error) {
             if (error.code === "ERR_CANCELED") {
                 console.log("Upload canceled");
@@ -287,11 +275,6 @@ const ModalFormOffer = ({ isClose }) => {
                     </div>
 
                     <div className="">
-                        <div className="space-x-4">
-                            {/* <input type="file" ref={fileRef} className="border" onChange={(e) => setFile(e.target.files[0])} /> */}
-                            <button className="border  rounded-2xl" onClick={cancelUpload}>cancel</button>
-                            <progress max={100} value={progress} className="rounded-xl w-full" />
-                        </div>
                         <div className="space-y-2">
                             {file.map((file, index) => (
                                 <div key={index} className="relative w-full  rounded-md border border-neutral-200 flex items-center justify-between p-2">
